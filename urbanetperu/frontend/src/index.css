@@ -1,0 +1,8 @@
+@import "./styles/variables.css";
+@import "./styles/global.css";
+@import "./styles/utilities.css";
+@import "./styles/login.css";
+@import "./styles/auth.css";
+@import "./styles/citizen-home.css";
+@import "./styles/report-flow.css";
+@import "./styles/my-reports.css";
