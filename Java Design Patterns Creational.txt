@@ -1,0 +1,102 @@
+# Java Design Patterns: Creational
+[LinkedIn course](https://www.linkedin.com/learning/java-design-patterns-creational) by [Bethan Palmer](https://www.linkedin.com/learning/instructors/bethan-palmer)
+
+## What are creational design patterns?
+ - Used to abstract the process of instantiating objects, when the system should not be aware of how objects are created: they encapsulate the object creation code. They become more useful the larger & more complex our application becomes.
+ - They are about defining a small subset of behaviors that can be used for the basis of lots more complex behaviors
+ - Themes defining all creational design patterns:
+   - they encapsulate knowledge about which concrete class the system should use
+   - they conceal how objects are created and put together.
+
+## Pattern 1: The Builder Pattern
+ - Used when constructors are expected to be too complex, e.g. with a long list of parameters (wrong order of arguments may be given or sometimes not all information is required in the creation of an object)
+ - Used instead of the **telescoping constructor pattern**, aka having a large selection of possible constructors for each object (aka with all possible & useful combinations of parameters) while retaining the flexibility of our code
+
+### Exercise 1
+We have the class `Bedroom` containing 8 fields and the `Architect` class which manages the `main` class which creates `Bedroom` objects. Use the Builder Pattern in order to add flexibility to the app.
+
+Solution: 
+
+a. [Simple] We create the `BedroomBuilder` class which contains setters for all `Bedroom` fields & the `createBedroom` method. The architect class now uses this builder's setters in order to specify whichever field we wish to set, and the rest are left with the default value (null). If this is not desirable, we may add a default value to the fields. I have added the logging in the main app & the `toString()` method for `Bedroom` in order to verify the results.
+
+b. [Complete] We expand the functionality of the app by adding the ability to create more types of rooms. We extract the `Builder` interface.
+
+c. [Complex] We expand the app in order to create houses with rooms (via `RoomBuilder`) and they can also have multiple stores. We expand the builder in order to facilitate all of the aformentioned functionalities.
+
+## Pattern 2: The Singleton Pattern
+
+Used when we need to make sure only one instance of a class can be created (e.g. Windows managers, DB connectors, File managers, UI dialogs, resource allocators & spoolers). The Java API already uses this pattern in some of its classes (e.g. `System`, `Desktop` and `Runtime`)
+
+### Exercise 2a
+In the `PrintSpooler` class we have a private constructor, thus not allowing any other class to initialize it. We also have the private method `init()` which would handle a more complex initialization process, and the method `getInstance()` which fetched the unique instance of `PrintSpooler` of our app.
+
+### Exercise 2b
+Use the Singleton pattern in a multithreaded app.
+
+Solution: make the `getInstance()` method `synchronized`.
+
+### Exercise 2c
+Java's API of `SingletonList`, `SingletonSet` and `SingletonMap` can assist in the implementation of this pattern. Using these methods does not turn the collection into a singleton, but it does provide a single point of access that always returns the same instance.
+
+In this application, we wish to implement a network connector of resources.
+
+## Pattern 3: The Prototype Pattern
+
+Makes copies of one original object.
+
+Useful when...
+ - we wish to create an object similar to one already created
+ - creating a new instance is a memory intense process (faster app, shorter & cleaner code)
+ - we want to keep the app agnostic to how an object is created
+ - classes are loaded dynamically
+
+This allows for cloned entities to still be modified.
+
+Elements:
+ - abstract prototype class, with a `clone()` method.
+ - concrete implementations which override the `clone()` method.
+
+### Exercise 3a
+We use an app which simulates rabbits breeding. We use the `Cloneable` interface provided by Java and override the `clone()` method. When we run the main process we see that the original and the clone rabbit both have the same age.
+
+However, the `clone()` method belongs to `Object`, not `Cloneable`. An alternative to this interface is the use of copy constructors. We could also just implement our own `clone()` method. Secondly, the `clone()` method only creates a shallow copy, meaning if a class contains mutable values, problems will arise.
+
+*Note: It is worth reading [Effective Java](https://www.goodreads.com/book/show/34927404-effective-java) by Joshua Bloch for more info about the issues of this interface.*
+
+### Exercise 3b
+We add the field `Person owner` to the `Rabbit` class (a mutable object) and overcome the aforementioned issue. 
+
+## Pattern 4: The Factory Method Pattern
+
+Used when a class (`candyStore`) doesn't know exactly what object types (`candy`) need to be created.
+
+We add the factory class which handles deciding which class to return, thus keeping the other classes immutable if another type of objects needs to be handled by the `candyStore` class, adding maintainability to the code.
+
+### Exercise 4a
+Given a candy store simulation app, use the aforementioned pattern in order to ameliorate the code.
+
+### Exercise 4b
+
+Introduce hierarchy.
+
+### Exercise 4c
+
+The full example.
+
+## Pattern 5: The Abstract Factory Pattern
+
+Provides an interface for creating families of objects, without specifying what their concrete typea are.
+
+Useful when there is a system that creates objects, but how these objects are created should be hidden from view. (families of objects), e.g. bike parts for different types of bikes.
+
+![The bike parts example as a graph](https://github.com/ZapDos7/design-patterns-examples/blob/master/bike-graph.png?raw=true)
+
+This pattern improves consistency, as all bikes are created with the same parts, albeit different types of them.
+
+### Exercise 5a
+Start of the implementation.
+### Exercise 5b
+End result of the implementation.
+
+### Exercise 5c
+Make the above implementation extensible.
